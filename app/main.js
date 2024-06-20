@@ -10,18 +10,18 @@ const yauzl = require('yauzl');
 const mkdirp = require('mkdirp');
 const pjson = require('./package.json');
 const { OpenGoal } = require('./opengoal');
-	
+
 let win = null;
 const runRepl = false;
 var openGoal;
 var userSettings = { window: { x: 10, y: 10, width: 1000, height: 800 } };
 
-function createWindow() {  
+function createWindow() {
 
 // --- CONFIGS ---
   let factor = screen.getPrimaryDisplay().scaleFactor;
 	win = new BrowserWindow({
-    width: userSettings.window.width / factor, 
+    width: userSettings.window.width / factor,
     height: userSettings.window.height / factor,
     minWidth: 850 / factor,
     minHeight: 670 / factor,
@@ -55,11 +55,11 @@ function createWindow() {
     require('electron-reloader')(module);
 
     win.loadURL('http://localhost:4200');
-  } 
+  }
   else {
-    win.loadURL(url.format({      
-        pathname: path.join( __dirname, 'teamruns-client/index.html'),       
-        protocol: 'file:',      
+    win.loadURL(url.format({
+        pathname: path.join( __dirname, 'teamruns-client/index.html'),
+        protocol: 'file:',
         slashes: true
     }));
   }
@@ -84,7 +84,7 @@ function createWindow() {
     userSettings.window.y = pos[1];
     writeSettings(userSettings);
   });
-    
+
 // --- FRONTEND COM ---
   ipcMain.on('og-start-repl', () => {
     openGoal.preStartREPL();
@@ -105,18 +105,18 @@ function createWindow() {
   ipcMain.on('settings-write', (event, settings) => {
     writeSettings(settings);
   });
-    
+
   ipcMain.on('settings-read', () => {
     readSettings();
   });
-    
+
   ipcMain.on('settings-select-path', (event, forIso) => {
     if (forIso)
       selectIsoPath();
     else
       selectFolderPath();
   });
-    
+
   ipcMain.on('settings-reset-size', () => {
     win.setSize(1000, 800);
     win.setPosition(10, 10);
@@ -161,33 +161,33 @@ function createWindow() {
   ipcMain.on('save-open', () => {
     openFolder(getSaveFilesPath());
   });
-    
+
   ipcMain.on('window-minimize', () => {
     win.minimize();
   });
-    
+
   ipcMain.on('window-close', () => {
     openGoal.killAllOgInstances();
     win.close();
   });
-    
+
   ipcMain.on('install-check', () => {
     checkInstallUpToDate();
   });
-    
+
   ipcMain.on('install-start', (event, isoPath) => {
     installGame(isoPath);
   });
-    
+
   ipcMain.on('install-update', () => {
     installGame();
   });
-    
+
   ipcMain.on('update-check', () => {
     if (app.isPackaged)
       checkClientUpToDate();
   });
-    
+
   ipcMain.on('update-start', () => {
     if (clientIsPortable())
       downloadLatestPortable();
@@ -199,35 +199,35 @@ function createWindow() {
   autoUpdater.on('download-progress', (progress) => {
     win.webContents.send('update-progress', progress.percent);
   });
-  
+
   autoUpdater.on('update-downloaded', () => {
     openGoal.killAllOgInstances();
     autoUpdater.quitAndInstall();
   });
 
-  
+
   if (!app.isPackaged)
     win.webContents.openDevTools({mode: "detach"});
 
     return win;
-} 
+}
 
 // --- ELECTRON LISTENERS ---
 app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-    // On macOS it is common for applications and their 
-    // menu bar to stay active until the user quits 
+    // On macOS it is common for applications and their
+    // menu bar to stay active until the user quits
     // explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
         app.quit()
     }
 })
-  
+
 app.on('activate', () => {
-    // On macOS it's common to re-create a window in the 
-    // app when the dock icon is clicked and there are no 
+    // On macOS it's common to re-create a window in the
+    // app when the dock icon is clicked and there are no
     // other windows open.
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow()
@@ -251,7 +251,7 @@ function readSettings() {
   else {
     fs.readFile(path.join(app.getPath('userData'), 'settings.json'), 'utf8', function (err, data) {
       if (err) console.log(err)
-      else if (data) 
+      else if (data)
         onUserSettingsRead(data);
     });
   }
@@ -259,7 +259,7 @@ function readSettings() {
 
 function onUserSettingsRead(data) {
   const user = JSON.parse(data);
-  
+
   if (!user.ogFolderpath) {
     user.ogFolderpath = getInstallPath();
     writeSettings(user);
@@ -275,7 +275,7 @@ function onUserSettingsRead(data) {
   }
   else
   user.window = userSettings.window;
-  
+
   userSettings = user;
 
   setTimeout(() => { //timeout to give client update to be check first
@@ -301,7 +301,7 @@ function getRecordingsPath() {
   const recPath = path.join(app.getPath('documents'), "Teamruns", "Recordings");
   if (!fs.existsSync(recPath))
     fs.mkdirSync(recPath, { recursive: true });
-  
+
   return recPath;
 }
 
@@ -320,7 +320,7 @@ function writeRecordings(recordings) {
 function openFolder(path) {
   if (!fs.existsSync(path))
     fs.mkdirSync(path, { recursive: true });
-  
+
     shell.openPath(path);
 }
 
@@ -333,7 +333,7 @@ function readFile(filepath) {
 
 async function downloadRecording(url) {
   if (!url.startsWith("https://firebasestorage.googleapis.com/")) return;
-  
+
   try {
     const response = (await axios.get(url));
     if (response.data)
@@ -352,7 +352,7 @@ function getSplitsPath() {
   const splitsPath = path.join(app.getPath('documents'), "Teamruns");
   if (!fs.existsSync(splitsPath))
     fs.mkdirSync(splitsPath, { recursive: true });
-  
+
   return splitsPath;
 }
 
@@ -376,7 +376,7 @@ function getSaveFilesPath() {
   const recPath = path.join(app.getPath('documents'), "Teamruns", "Saves");
   if (!fs.existsSync(recPath))
     fs.mkdirSync(recPath, { recursive: true });
-  
+
   return recPath;
 }
 
@@ -460,7 +460,7 @@ async function downloadLatestPortable() {
 
 // --- OPENGOAL INSTALLATION ---
 function getInstallPath() {
-  const installPath = userSettings.ogFolderpath ?? path.join(app.getPath('documents'), "Teamruns", "jak-project");
+  const installPath = userSettings.ogFolderpath ?? path.join(app.getPath('documents'), "Teamruns-car", "jak-project");
   if (!fs.existsSync(installPath))
     fs.mkdirSync(installPath, { recursive: true });
 
@@ -490,7 +490,7 @@ async function checkGameIsInstalled() {
     return;
 
   const folderPath = getInstallPath();
-  
+
   if (!fs.existsSync(folderPath))
     return false;
 
@@ -509,7 +509,7 @@ async function checkGameIsInstalled() {
 }
 
 async function getLatestGameReleaseVersion() {
-  const response = await axios.get("https://api.github.com/repos/JoKronk/teamruns-jak-project/releases", { headers: { 'User-Agent': 'Teamruns' } });
+  const response = await axios.get("https://api.github.com/repos/my-opengoal-mods/teamruns-jak-project/releases", { headers: { 'User-Agent': 'Teamruns' } });
   return response.data.length !== 0 ? response.data[0].name.substring(1) : "";
 }
 
@@ -520,7 +520,7 @@ async function checkInstallUpToDate() {
   }
   else
     win.webContents.send("install-found");
-  
+
   if (await getLatestGameReleaseVersion() !== userSettings.gameVersion)
     win.webContents.send("install-outdated");
 }
@@ -538,11 +538,11 @@ function sendInstallProgress(progress, message) {
 
 async function cleanGameInstallLocation() {
   let folderPath = getInstallPath();
-  
+
   const dataPath = path.join(folderPath, "data");
   if (!fs.existsSync(dataPath))
     return;
-  
+
   //exe files
   for(const file of (await fs.promises.readdir(folderPath))) {
     const entryPath = path.join( folderPath, file );
@@ -551,7 +551,7 @@ async function cleanGameInstallLocation() {
     if(stat.isFile())
       await fs.promises.unlink(entryPath);
   }
-  
+
   //data folder
   for(const file of (await fs.promises.readdir(dataPath))) {
     if (file.includes("iso_data"))
@@ -571,40 +571,40 @@ async function cleanGameInstallLocation() {
 async function installGame(isoPath) { //downloads and unzips project, then calls extractISO
   if (!isSupportedPlatform())
     return;
-  
+
   await cleanGameInstallLocation();
   sendInstallProgress(1, "Fetching game version");
   const version = await getLatestGameReleaseVersion();
   sendInstallProgress(3, "Downloading release");
-  const response = await (isWindows() 
-    ? axios.get("https://github.com/JoKronk/teamruns-jak-project/releases/latest/download/opengoal-windows-v" + version + ".zip", { responseType: 'arraybuffer' })
-    : axios.get("https://github.com/JoKronk/teamruns-jak-project/releases/latest/download/opengoal-linux-v" + version + ".tar.gz", { responseType: 'arraybuffer' }));
-  
+  const response = await (isWindows()
+    ? axios.get("https://github.com/my-opengoal-mods/teamruns-jak-project/releases/latest/download/opengoal-windows-v" + version + ".zip", { responseType: 'arraybuffer' })
+    : axios.get("https://github.com/my-opengoal-mods/teamruns-jak-project/releases/latest/download/opengoal-linux-v" + version + ".tar.gz", { responseType: 'arraybuffer' }));
+
   sendInstallProgress(5, "Unzipping");
   let folderPath = getInstallPath();
 
   if (isWindows()) {
     yauzl.fromBuffer(response.data, { lazyEntries: true }, function(err, zipFile) {
       if (err) throw err;
-  
+
       const entryTotalCount = zipFile.entryCount;
       let entryProgress = 0;
-  
+
       zipFile.readEntry();
       zipFile.on("entry", function(entry) {
-  
+
         if (/\/$/.test(entry.fileName)) {
           // Directory
           mkdirp.sync(path.join(folderPath, entry.fileName));
           zipFile.readEntry();
-        } 
+        }
         else {
           // File
           zipFile.openReadStream(entry, function(err, readStream) {
             if (err) throw err;
             const file = fs.createWriteStream(path.join(folderPath, entry.fileName));
             readStream.pipe(file);
-  
+
             file.on('finish', () => {
               // Wait until the file is finished writing, then read the next entry.
               file.close(() => {
@@ -613,14 +613,14 @@ async function installGame(isoPath) { //downloads and unzips project, then calls
                 sendInstallProgress((entryProgress / entryTotalCount * 15 + 5), "Unzipping");
                 zipFile.readEntry();
               });
-  
+
               file.on('error', (err) => { zipFile.close(); });
             });
           });
         }
       });
-  
-      
+
+
       zipFile.on("end", function () {
         extractISO(version, isoPath);
       });
@@ -634,7 +634,7 @@ async function installGame(isoPath) { //downloads and unzips project, then calls
         file: tarPath,
         cwd: getInstallPath()
       }
-    ).then(_=> { 
+    ).then(_=> {
       fs.promises.unlink(tarPath);
       extractISO(version, isoPath)
     });
@@ -674,7 +674,7 @@ function extractISO(version, isoPath) {
           let progress = (extractProgress > extractTotal ? extractTotal : extractProgress) / extractTotal * 15 + 20;
           if (currentProgress < progress) {
             currentProgress = progress;
-            sendInstallProgress(progress, msg); 
+            sendInstallProgress(progress, msg);
           }
         }
         else if (msg.includes("[info] stats for")) {
@@ -683,7 +683,7 @@ function extractISO(version, isoPath) {
           let progress = (decompProgress > decompTotal ? decompTotal : decompProgress) / decompTotal * 15 + (isoPath ? 35 : 20);
           if (currentProgress < progress) {
             currentProgress = progress;
-            sendInstallProgress(currentProgress, "Decompiling"); 
+            sendInstallProgress(currentProgress, "Decompiling");
           }
         }
       }
@@ -693,7 +693,7 @@ function extractISO(version, isoPath) {
           progress = progress[0].slice(0, -1) / 100 * (isoPath ? 49 : 64) + (isoPath ? 50 : 35);
           if (!isNaN(progress) && currentProgress < progress) {
             currentProgress = progress;
-            sendInstallProgress(currentProgress, "Compiling"); 
+            sendInstallProgress(currentProgress, "Compiling");
           }
         }
       }
