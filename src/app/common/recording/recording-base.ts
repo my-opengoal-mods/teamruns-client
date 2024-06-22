@@ -32,6 +32,8 @@ export class RecordingBase {
             if (this.playback[i].qZ) this.playback[i].qZ = Math.round((this.playback[i].qZ! + Number.EPSILON) * 1000) / 1000;
             if (this.playback[i].qW) this.playback[i].qW = Math.round((this.playback[i].qW! + Number.EPSILON) * 1000) / 1000;
             if (this.playback[i].rY) this.playback[i].rY = Math.round((this.playback[i].rY! + Number.EPSILON) * 1000) / 1000;
+            if (this.playback[i].sN) this.playback[i].sN = Math.round((this.playback[i].sN! + Number.EPSILON) * 1000) / 1000;
+
 
             if (prevData.tX === this.playback[i].tX) this.playback[i].tX = undefined;
             if (prevData.tY === this.playback[i].tY) this.playback[i].tY = undefined;
@@ -40,7 +42,7 @@ export class RecordingBase {
             if (prevData.qY === this.playback[i].qY) this.playback[i].qY = undefined;
             if (prevData.qZ === this.playback[i].qZ) this.playback[i].qZ = undefined;
             if (prevData.qW === this.playback[i].qW) this.playback[i].qW = undefined;
-            if (prevData.rY === this.playback[i].rY) this.playback[i].rY = undefined;
+            if (prevData.sN === this.playback[i].sN) this.playback[i].sN = undefined;
             
             if (this.playback[i].tX) prevData.tX = this.playback[i].tX;
             if (this.playback[i].tY) prevData.tY = this.playback[i].tY;
@@ -49,7 +51,8 @@ export class RecordingBase {
             if (this.playback[i].qY) prevData.qY = this.playback[i].qY;
             if (this.playback[i].qZ) prevData.qZ = this.playback[i].qZ;
             if (this.playback[i].qW) prevData.qW = this.playback[i].qW;
-            if (this.playback[i].qW) prevData.rY = this.playback[i].rY;
+            if (this.playback[i].rY) prevData.rY = this.playback[i].rY;
+            if (this.playback[i].sN) prevData.sN = this.playback[i].sN;
             if (this.playback[i].t) prevData.t = this.playback[i].t;
         }
     }

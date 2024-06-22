@@ -10,6 +10,7 @@ export class PositionData extends InteractionData {
     quatZ: number;
     quatW: number;
     rotY: number;
+    showName: number;
     tgtState: number | undefined; //symbol number
     currentLevel: number | undefined; //symbol number
 
@@ -29,6 +30,7 @@ export class UserPositionData extends PositionData {
         this.quatY = positionData.quatY;
         this.quatZ = positionData.quatZ;
         this.rotY = positionData.rotY;
+        this.showName = positionData.showName;
         this.interType = positionData.interType;
         this.interAmount = positionData.interAmount;
         this.interStatus = positionData.interStatus;
@@ -56,6 +58,7 @@ export class UserPositionData extends PositionData {
             transX: 0,
             transY: 0,
             transZ: 0,
+            showName: 0,
             tgtState: undefined,
             currentLevel: undefined,
             interType: positionData.interType,

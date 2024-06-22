@@ -85,6 +85,11 @@ export class CurrentPlayerData {
             this.positionData.rotY = positionData.rotY;
             this.positionDataFull.rotY = positionData.rotY;
         }
+
+        if (positionData.showName !== undefined && (this.positionDataFull.showName === undefined || this.positionDataFull.showName !== positionData.showName)) {
+            this.positionData.showName = positionData.showName;
+            this.positionDataFull.showName = positionData.showName;
+        }
         
         if (positionData.tgtState !== undefined && (this.positionDataFull.tgtState === undefined || this.positionDataFull.tgtState !== positionData.tgtState)) {
             this.positionData.tgtState = positionData.tgtState;

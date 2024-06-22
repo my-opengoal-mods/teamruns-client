@@ -13,6 +13,7 @@ export class CurrentPositionData {
     quatZ: number | undefined;
     quatW: number | undefined;
     rotY: number | undefined;
+    showName: number | undefined;
     tgtState: number | undefined; //symbol number
     currentLevel: number | undefined; //symbol number
     
@@ -44,6 +45,7 @@ export class CurrentPositionData {
         this.quatZ = undefined;
         this.quatW = undefined;
         this.rotY = undefined;
+        this.showName = undefined;
         this.tgtState = undefined;
         this.currentLevel = undefined;
         this.username = undefined;
@@ -61,6 +63,7 @@ export class CurrentPositionData {
         if (this.quatY === undefined) this.quatY = positionData.quatY;
         if (this.quatZ === undefined) this.quatZ = positionData.quatZ;
         if (this.rotY === undefined) this.rotY = positionData.rotY;
+        if (this.showName === undefined) this.showName = positionData.showName;
         if (this.tgtState === undefined) this.tgtState = positionData.tgtState;
         if (this.currentLevel === undefined) this.currentLevel = positionData.currentLevel;
         if (this.userId === undefined) this.userId = positionData.userId;

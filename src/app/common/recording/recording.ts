@@ -83,6 +83,7 @@ export class Recording extends RecordingBase {
         if (recPos.qZ) this.posOut.quatZ = recPos.qZ;
         if (recPos.qW) this.posOut.quatW = recPos.qW;
         if (recPos.rY) this.posOut.rotY = recPos.rY;
+        if (recPos.sN) this.posOut.showName = recPos.sN;
         if (recPos.tS) this.posOut.tgtState = recPos.tS;
         if (recPos.cL) this.posOut.currentLevel = recPos.cL;
         if (recPos.t) this.posOut.time = recPos.t;
