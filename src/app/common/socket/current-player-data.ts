@@ -156,6 +156,9 @@ export class CurrentPlayerData {
 
         if (this.positionData.color !== undefined && this.positionDataFull.color !== this.positionData.color)
             this.positionDataFull.color = this.positionData.color;
+
+        if (this.positionData.showName !== undefined && this.positionDataFull.showName !== this.positionData.showName)
+            this.positionDataFull.showName = this.positionData.showName;
     }
 
     isInLevel(levelSymbol: number | undefined): boolean {
